@@ -1,6 +1,5 @@
 local games = {
     [121864768012064] = "https://pastefy.app/AzMoeg4V/raw",
-    [109122427648540] = "https://pastefy.app/AzMoeg4V/raw",
 }
 
 local currentID = game.PlaceId
