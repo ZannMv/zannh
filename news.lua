@@ -4,14 +4,14 @@
 local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
 local Window = WindUI:CreateWindow({
     Title = "ZannHub - Fish It",
-    Icon = "rbxassetid://77450716236002",
+    Icon = "rbxassetid://130737200212160",
     Author = "Premium Version",
     Folder = "ZannHub",
     Size = UDim2.fromOffset(600, 360),
     MinSize = Vector2.new(560, 250),
     MaxSize = Vector2.new(950, 760),
     Transparent = true,
-    Theme = "Ocean",
+    Theme = "Dark",
     Resizable = true,
     SideBarWidth = 190,
     BackgroundImageTransparency = 0.42,
@@ -8585,7 +8585,7 @@ do
     about:Paragraph({
         Title = "ZannHub Community",
         Desc = "Join Our Community Discord Server to get the latest updates, support, and connect with other users!",
-        Image = "rbxassetid://77450716236002",
+        Image = "rbxassetid://130737200212160",
         ImageSize = 24,
         Buttons = {
             {
@@ -8613,7 +8613,7 @@ do
     })
 
     about:Image({
-        Image = "rbxassetid://77450716236002",
+        Image = "rbxassetid://130737200212160",
         AspectRatio = "16:9",
         Radius = 9,
     })
@@ -8642,7 +8642,7 @@ Window:Tag({
 
 Window:EditOpenButton({
     Title = "ZannHub - Fish It",
-    Icon = "rbxassetid://77450716236002",
+    Icon = "rbxassetid://130737200212160",
     CornerRadius = UDim.new(0,30),
     StrokeThickness = 1.5,
     Color = ColorSequence.new(
@@ -8706,7 +8706,7 @@ local function CreateFloatingIcon()
     -- Icon Gambar
     local IconImage = Instance.new("ImageLabel")
     IconImage.Name = "Icon"
-    IconImage.Image = "rbxassetid://77450716236002"
+    IconImage.Image = "rbxassetid://130737200212160"
     IconImage.BackgroundTransparency = 1
     IconImage.Size = UDim2.new(1, -4, 1, -4) 
     IconImage.Position = UDim2.new(0.5, 0, 0.5, 0)
