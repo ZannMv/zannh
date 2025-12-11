@@ -11,10 +11,33 @@ local mouse = player:GetMouse()
 local character = player.Character or player.CharacterAdded:Wait()
 local HRP = character:WaitForChild("HumanoidRootPart")
 local humanoid = character:FindFirstChildOfClass("Humanoid")
- -- fluent
-local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
-local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+ -- fluent with error handling
+local success, Fluent = pcall(function()
+    return loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+end)
+
+if not success then
+    warn("Failed to load Fluent UI library:", Fluent)
+    return
+end
+
+local success2, SaveManager = pcall(function()
+    return loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+end)
+
+if not success2 then
+    warn("Failed to load SaveManager:", SaveManager)
+    return
+end
+
+local success3, InterfaceManager = pcall(function()
+    return loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+end)
+
+if not success3 then
+    warn("Failed to load InterfaceManager:", InterfaceManager)
+    return
+end
 local Window = Fluent:CreateWindow({
     Title = "The Forge GUI",
     SubTitle = "by @ZannID",
@@ -223,8 +246,10 @@ function MiningController.breakOre(hitbox, toggle)
     local lastValue = hpGUI.Text
     repeat
 
-        toolActivatedRF:InvokeServer("Pickaxe")
-        task.wait()
+        pcall(function()
+            toolActivatedRF:InvokeServer("Pickaxe")
+        end)
+        task.wait(0.05) -- Slight delay to prevent spam detection
 
         if hpGUI.Text ~= lastValue then
             lastChange = tick()
@@ -444,19 +469,27 @@ function SellController.sellInventory()
 
     local sellRequest = SellController.formatSellable(oreTable, miscTable)
 
-    dialogueRF:InvokeServer(workspace.Proximity:FindFirstChild("Greedy Cey")) -- init auto sell ig?
+    pcall(function()
+        dialogueRF:InvokeServer(workspace.Proximity:FindFirstChild("Greedy Cey"))
+    end)
 
-    task.wait()
+    task.wait(0.2)
 
-    dialogueRE:FireServer("Opened")
+    pcall(function()
+        dialogueRE:FireServer("Opened")
+    end)
 
-    task.wait(0.1)
+    task.wait(0.2)
 
-    dialogueRE:FireServer("Closed")
+    pcall(function()
+        dialogueRE:FireServer("Closed")
+    end)
 
-    task.wait(0.5)
+    task.wait(0.3)
 
-    runCommandRF:InvokeServer(unpack(sellRequest))
+    pcall(function()
+        runCommandRF:InvokeServer(unpack(sellRequest))
+    end)
 end
 
 function SellController.isInventoryFull()
@@ -554,7 +587,13 @@ function CombatController.killEnemy(enemy)
 
         MovementController.teleport(CFrame.new(enemy:GetPivot().Position - enemy:GetPivot().LookVector * 8 , enemy:GetPivot().Position), true)
         
-        task.spawn(function() toolActivatedRF:InvokeServer("Weapon") end)
+        task.spawn(function() 
+            pcall(function()
+                toolActivatedRF:InvokeServer("Weapon") 
+            end)
+        end)
+        
+        task.wait(0.05) -- Prevent spam
 
     until not enemy.Parent or hpText.Text == "0 HP" or not HRP.Parent or not character.Parent
 
