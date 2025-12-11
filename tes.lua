@@ -11,33 +11,62 @@ local mouse = player:GetMouse()
 local character = player.Character or player.CharacterAdded:Wait()
 local HRP = character:WaitForChild("HumanoidRootPart")
 local humanoid = character:FindFirstChildOfClass("Humanoid")
- -- fluent with error handling
-local success, Fluent = pcall(function()
-    return loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-end)
+ -- fluent with retry logic and fallback
+local Fluent, SaveManager, InterfaceManager
 
-if not success then
-    warn("Failed to load Fluent UI library:", Fluent)
+local function tryLoadLibrary(url, name, maxRetries)
+    maxRetries = maxRetries or 3
+    for attempt = 1, maxRetries do
+        local success, result = pcall(function()
+            return loadstring(game:HttpGet(url))()
+        end)
+        
+        if success then
+            print("✓ Loaded " .. name)
+            return true, result
+        else
+            warn(string.format("⚠ Failed to load %s (Attempt %d/%d): %s", name, attempt, maxRetries, tostring(result)))
+            if attempt < maxRetries then
+                task.wait(attempt * 0.5) -- Progressive delay
+            end
+        end
+    end
+    return false, nil
+end
+
+local fluentLoaded, fluentLib = tryLoadLibrary(
+    "https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua",
+    "Fluent UI"
+)
+
+if not fluentLoaded then
+    error([[
+========================================
+ERROR: Cannot load Fluent UI library!
+========================================
+The game may be blocking external HTTP requests.
+
+SOLUTION:
+Use 'theforge2_noui.lua' instead - it works without external UI libraries.
+Or try a different executor/VPN.
+========================================
+]])
     return
 end
 
-local success2, SaveManager = pcall(function()
-    return loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
-end)
+Fluent = fluentLib
 
-if not success2 then
-    warn("Failed to load SaveManager:", SaveManager)
-    return
-end
+local saveLoaded, saveLib = tryLoadLibrary(
+    "https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua",
+    "SaveManager"
+)
+SaveManager = saveLoaded and saveLib or nil
 
-local success3, InterfaceManager = pcall(function()
-    return loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
-end)
-
-if not success3 then
-    warn("Failed to load InterfaceManager:", InterfaceManager)
-    return
-end
+local interfaceLoaded, interfaceLib = tryLoadLibrary(
+    "https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua",
+    "InterfaceManager"  
+)
+InterfaceManager = interfaceLoaded and interfaceLib or nil
 local Window = Fluent:CreateWindow({
     Title = "The Forge GUI",
     SubTitle = "by @ZannID",
