@@ -1376,7 +1376,7 @@ if game.GameId == 7671049560 then
             ToggleMineLava:OnChanged(function() Config.MineLavaCheck = Options.MineLavaCheck.Value end)
 
             -- Dynamic Mine Targets
-            Section:AddParagraph("MineTargetsHelp", {Title = "Targets", Content = "Select rocks to mine."})
+            Section:AddParagraph({Title = "Targets", Content = "Select rocks to mine."})
             local MineTargetsDropdown = Section:AddDropdown("MineTargets", {
                 Title = "Rock Types",
                 Values = {"Pebble"},
@@ -1428,7 +1428,7 @@ if game.GameId == 7671049560 then
             local ToggleAutoParry = Section:AddToggle("AutoParry", {Title = "Auto Block", Default = Config.AutoParry })
             ToggleAutoParry:OnChanged(function() Config.AutoParry = Options.AutoParry.Value end)
             
-            Section:AddParagraph("AttackTargetsHelp", {Title = "Targets", Content = "Select mobs to attack."})
+            Section:AddParagraph({Title = "Targets", Content = "Select mobs to attack."})
             local AttackTargetsDropdown = Section:AddDropdown("AttackTargets", {
                 Title = "Mob Types",
                 Values = {},
@@ -1469,7 +1469,7 @@ if game.GameId == 7671049560 then
         -- Forge Tab
         do
             local Section = Tabs.Forge:AddSection("Instant Forge")
-            Section:AddParagraph("ForgeWarn", {Title = "WARNING", Content = "If you use Instant Forge, you MUST quit and reopen the game before using the forge manually!"})
+            Section:AddParagraph({Title = "WARNING", Content = "If you use Instant Forge, you MUST quit and reopen the game before using the forge manually!"})
 
             local DropdownForgeType = Section:AddDropdown("ForgeItemType", {
                 Title = "Forge Item Type",
@@ -1565,7 +1565,7 @@ if game.GameId == 7671049560 then
         -- Shop Tab (Auto Sell)
         do
             local Section = Tabs.Shop:AddSection("Auto Sell")
-            Section:AddParagraph("ShopDesc", {Title = "Description", Content = "Select items to auto-sell."})
+            Section:AddParagraph({Title = "Description", Content = "Select items to auto-sell."})
             
             local SellDropdown = Section:AddDropdown("AutoSellItems", {
                 Title = "Items to Sell",
@@ -1710,7 +1710,7 @@ if game.GameId == 7671049560 then
                         end
                     end
                 else
-                    Section:AddParagraph("NoProx", {Title = "Info", Content = "No Proximity Folder Found"})
+                    Section:AddParagraph({Title = "Info", Content = "No Proximity Folder Found"})
                 end
             end)
         end
